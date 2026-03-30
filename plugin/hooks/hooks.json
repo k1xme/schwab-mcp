@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rm -f /tmp/schwab-mcp/*.json /tmp/schwab-mcp/*.html 2>/dev/null; find plugin/skills -maxdepth 2 \\( -name '*.json' -o -name '*.html' \\) ! -name 'config.json' ! -name 'entry_chart.html' -delete 2>/dev/null; true"
+          }
+        ]
+      }
+    ]
+  }
+}

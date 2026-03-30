@@ -1,0 +1,8 @@
+{
+  "name": "schwab",
+  "version": "1.0.0",
+  "description": "Schwab brokerage MCP server — skills for orders, quotes, accounts, market data, and instruments",
+  "author": {
+    "name": "longkexi@gmail.com"
+  }
+}
