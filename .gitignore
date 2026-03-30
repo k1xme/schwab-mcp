@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+*.db
+.env
+dist/
+*.egg-info/
+.pytest_cache/
+*.log
+.worktrees/
+personal-github*
+*.png
+plugin/skills/schwab-chart-orders/plotly.min.js
+plugin/skills/schwab-chart-orders/chart.html
+.venv/
+.superpowers/
+.claude/
