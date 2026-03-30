@@ -126,7 +126,7 @@ Claude: [fetches filled orders for Mar 22-28]
         Interactive chart saved to plugin/skills/chart-orders/chart.html
 ```
 
-![Chart orders example](docs/chart-orders-example.png)
+![Chart orders example](chart-orders-example.png)
 
 The skill guided Claude to:
 1. Fetch filled orders for the date range and identify the underlying (SPXW/SPX)
