@@ -62,6 +62,77 @@ Once installed, ask Claude things like:
 - "Show me today's top movers on the S&P 500"
 - "Chart my filled orders for SPX today"
 
+## Example: Placing a Limit Order
+
+```
+You: Buy 100 shares of SPY with limit order at current median bid-ask spread.
+     This order should be canceled if it weren't filled before 3/30 12PM ET.
+
+Claude: I need to get SPY's current bid-ask spread first, then build the order.
+        Let me fetch the quote.
+
+        [calls get_quotes for SPY]
+
+        Got the quote. Here's the current SPY pricing:
+        - Bid: $632.70
+        - Ask: $633.00
+        - Midpoint: $632.85
+
+        Regarding cancellation by 3/30 12PM ET — Schwab doesn't support
+        "cancel at a specific time." I'll use DAY duration (valid through
+        market close on 3/30). You'd need to manually cancel at noon if
+        unfilled.
+
+        [calls place_order with confirmed=False — dry run]
+
+        | Field      | Value                      |
+        |------------|----------------------------|
+        | Action     | BUY                        |
+        | Symbol     | SPY                        |
+        | Quantity   | 100 shares                 |
+        | Order Type | LIMIT                      |
+        | Price      | $632.85 (bid-ask midpoint) |
+        | Duration   | DAY                        |
+        | Session    | NORMAL                     |
+
+        Shall I submit this order?
+
+You: yes
+
+Claude: [calls place_order with confirmed=True]
+
+        Order submitted successfully.
+```
+
+The skill guided Claude to:
+1. Fetch the quote to calculate the midpoint price
+2. Dry-run the order first (`confirmed=False`) and show the summary
+3. Only submit (`confirmed=True`) after explicit user approval
+
+## Example: Charting Filled Orders
+
+```
+You: Plot my last week's credit spread trades
+
+Claude: [fetches filled orders for Mar 22-28]
+
+        39 credit spread orders on SPXW last week — 30 vertical spreads
+        and 9 iron condors across 5 trading days.
+
+        [fetches 15-minute SPX candles for the same range]
+        [runs chart_orders.py with candles + orders data]
+
+        Candles: 130, Orders: 62 (12 buy, 11 sell, 39 spread)
+        Interactive chart saved to plugin/skills/chart-orders/chart.html
+```
+
+![Chart orders example](docs/chart-orders-example.png)
+
+The skill guided Claude to:
+1. Fetch filled orders for the date range and identify the underlying (SPXW/SPX)
+2. Fetch 15-minute candles (appropriate for a multi-day range)
+3. Run the chart script to generate an interactive Plotly chart with order markers, day separators, and hover tooltips
+
 ## Safety
 
 Mutating operations (`place_order`, `cancel_order`, `replace_order`) use a two-step confirmation pattern. The first call is a dry run that shows what would happen; you must explicitly confirm to execute.
